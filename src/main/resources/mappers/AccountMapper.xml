@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edwin.emsp.dao.mapper.AccountMapper">
+    <!-- 分页查询账户 -->
+    <select id="selectAccountsByLastUpdated" resultType="Account">
+        SELECT id,
+               email,
+               contract_id AS contractId,
+               status,
+               create_time AS createTime,
+               update_time AS updateTime
+        FROM emsp_account
+        WHERE update_time >= #{lastUpdated}
+        ORDER BY update_time DESC
+    </select>
+
+    <!-- 批量查询卡片 -->
+    <select id="selectCardsByEmails" resultType="Card">
+        SELECT
+        id, uid, visible_number AS visibleNumber,
+        status, email, create_time AS createTime,
+        update_time AS updateTime
+        FROM emsp_card
+        WHERE email IN
+        <foreach item="email" collection="emails" open="(" separator="," close=")">
+            #{email}
+        </foreach>
+    </select>
+
+     <!-- 查询单个邮箱关联的卡片 -->
+    <select id="selectCardsByEmail" resultType="Card">
+        SELECT
+        id, uid, visible_number AS visibleNumber,
+        status, email, create_time AS createTime,
+        update_time AS updateTime
+        FROM emsp_card
+        WHERE email = #{email}
+    </select>
+
+    <!-- 批量更新卡片 -->
+    <update id="batchUpdateCards">
+        UPDATE emsp_card
+        SET status = CASE
+        <foreach collection="list" item="card">
+            WHEN id = #{card.id} THEN #{card.status}
+        </foreach>
+        END,
+        update_time = CASE
+        <foreach collection="list" item="card">
+            WHEN id = #{card.id} THEN #{card.updateTime}
+        </foreach>
+        END
+        WHERE id IN
+        <foreach collection="list" item="card" open="(" separator="," close=")">
+            #{card.id}
+        </foreach>
+    </update>
+</mapper>

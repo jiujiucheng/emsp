@@ -1,0 +1,48 @@
+
+### 账号创建接口
+POST http://localhost:8080/api/account/create
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "status": 3
+}
+
+### 账号更新接口 2-激活 3-失效
+POST http://localhost:8080/api/account/status
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "status": 1
+}
+
+### 账号列表分页查询接口
+GET http://localhost:8080/api/account/list?lastUpdated=2025-04-13 14:06:00&page=1&size=10
+
+### 卡号创建接口
+POST http://localhost:8080/api/card/create
+Content-Type: application/json
+
+{
+  "uid": "USABC123456789",
+  "visibleNumber": "1233674567891"
+}
+
+### 卡号更新接口  3-激活 4 - 失效
+POST http://localhost:8080/api/card/status
+Content-Type: application/json
+
+{
+  "cardId": 8,
+  "status": 4
+}
+
+### 卡号分配接口
+POST http://localhost:8080/api/card/assign
+Content-Type: application/json
+
+{
+  "cardId": 8,
+  "email": "111@acc.com"
+}

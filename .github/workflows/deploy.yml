@@ -1,0 +1,42 @@
+name: Deploy emsp
+on:
+  push:
+    branches:
+      - dev  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean package -DskipTests
+
+      - name: Deploy to Cloud Server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}      
+          username: ${{ secrets.SERVER_USER }}   
+          key: ${{ secrets.ECS_SERVER_KEY }}     
+          port: ${{ secrets.SERVER_PORT }}     
+          source: target/*.jar sql Dockerfile docker-compose.yml                        
+          target: /app/emsp          
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER  }}
+          key: ${{ secrets.ECS_SERVER_KEY }}
+          script: |
+            cd /app
+            docker-compose down
+            docker-compose up -d --build

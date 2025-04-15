@@ -38,5 +38,5 @@ jobs:
           key: ${{ secrets.ECS_SERVER_KEY }}
           script: |
             cd /app/emsp
-            docker compose down
-            docker compose up -d --build
+            docker  compose down
+            docker  compose up -d --build

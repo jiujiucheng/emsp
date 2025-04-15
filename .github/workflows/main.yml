@@ -23,7 +23,7 @@ jobs:
 
       # Step 3: 测试 SSH 连接
       - name: Test SSH Connection
-        run: ssh test-server "echo 'SSH Connection Successful!'"
+        run: ssh -vT test-server "echo 'SSH Connection Successful!'"
 
       # Step 4: 输出测试结果
       - name: Report Success

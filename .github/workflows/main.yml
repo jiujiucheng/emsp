@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          echo "${{ secrets.SERVER_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa  # 移除可能的 Windows 换行符
+          echo "${{ secrets.ECS_SERVER_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa  # 移除可能的 Windows 换行符
           chmod 600 ~/.ssh/id_rsa
           echo -e "Host test-server\n  HostName ${{ secrets.SERVER_HOST }}\n  User ${{ secrets.SERVER_USER }}\n  IdentityFile ~/.ssh/id_rsa\n  StrictHostKeyChecking no" > ~/.ssh/config
           chmod 600 ~/.ssh/config

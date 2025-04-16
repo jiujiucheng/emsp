@@ -4,8 +4,8 @@ POST http://localhost:8080/api/account/create
 Content-Type: application/json
 
 {
-  "email": "test@example.com",
-  "status": 3
+  "email": "test@example.com"
+
 }
 
 ### 账号更新接口 2-激活 3-失效

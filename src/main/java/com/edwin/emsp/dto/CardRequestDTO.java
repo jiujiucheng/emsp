@@ -7,6 +7,8 @@ import com.edwin.emsp.dto.validgroup.UpdateGroup;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+
 
 /**
  * @Author: jiucheng
@@ -33,6 +35,7 @@ public class CardRequestDTO {
     private String uid;
 
     @NotBlank(message = "卡号不能为空", groups = {CreateGroup.class})
+    @Length(min = 8, max = 64, message = "卡号长度必须在[8,64]", groups = {CreateGroup.class})
     private String visibleNumber;
 
     @NotNull(message = "status不能为空", groups = {UpdateGroup.class})

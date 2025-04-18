@@ -22,15 +22,16 @@ emsp项目，使用传统MVC风格的项目代码布局，Maven版
 ## RESTful API 设计
 参数请参考[swagger](http://101.201.46.166:8080/swagger-ui/index.html#/)
 
-| 操作      | HTTP 方法 |  路径                 | 说明                            |
+| 操作      | HTTP 方法 | 路径                  | 说明                            |
 |---------|---------|---------------------|-------------------------------|
-| 创建账号    | POST    | /api/account/create |                               |
-| 修改账号状态  | POST    | /api/account/status | 只能修改两种状态：activiated,inactived |
-| 查询账号及卡片 | GET     | /api/account/list | PageHelper分页查询                |
-| 创建卡片    | POST    | /api/card/create |                               |
-| 修改卡片状态  | POST    | /api/card/status | 只能修改两种状态：activiated,inactived |
-| 分配卡     | POST    | /api/card/assign       |                               |
+| 创建账号    | POST    | /api/accounts       |                               |
+| 修改账号状态  | PATCH   | /api/account/status | 只能修改两种状态：activiated,inactived |
+| 查询账号及卡片 | GET     | /api/accounts       | PageHelper分页查询                |
+| 创建卡片    | POST    | /api/cards          |                               |
+| 修改卡片状态  | PATCH    | /api/card/status    | 只能修改两种状态：activiated,inactived |
+| 分配卡     | PATCH    | /api/card/assign    |                               |
 ## 业务架构设计
 1. 横切日志，非功能业务、功能业务解耦
 2. 事件驱动
 3. 统一响应格式
+4. 全局异常处理兜底

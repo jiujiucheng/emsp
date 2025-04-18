@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}   
           key: ${{ secrets.ECS_SERVER_KEY }}     
           port: ${{ secrets.SERVER_PORT }}     
-          source: "target/*.jar,Dockerfile, docker-compose.yml,sql/"
+          source: "*/target/*.jar,Dockerfile, docker-compose.yml,sql/"
           target: /app/emsp          
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1

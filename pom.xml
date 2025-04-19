@@ -39,6 +39,7 @@
         <module>emsp-model</module>
         <module>emsp-dao</module>
         <module>emsp-common</module>
+        <module>emsp-domain</module>
     </modules>
 
     <dependencies>

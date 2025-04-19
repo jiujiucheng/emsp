@@ -13,19 +13,19 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2025/4/12
  */
 @Configuration
-public class OpenApiConfig {
+public class OpenApiConfig  {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("API 文档")
+                        .title("API Documentation")
                         .version("1.0")
-                        .description("Spring Boot 3 接口文档")
+                        .description("Emsp API Documentation")
                         .license(new License().name("Apache 2.0"))
                 )
                 .externalDocs(new ExternalDocumentation()
-                        .url("https://github.com/your-repo")
-                        .description("项目 Wiki")
+                        .url("https://github.com/jiujiucheng/emsp")
+                        .description("a project about the emsp")
                 );
     }
 }

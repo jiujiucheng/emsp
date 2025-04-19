@@ -1,5 +1,6 @@
 package com.edwin.emsp.model.vo.message;
 
+import com.edwin.emsp.common.util.MessageUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,16 +9,16 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum RstStatus {
 
-	ok(1, "ok", "恭喜你，操作成功"),
-	bizError(101, "biz error", null),
-	missParameter(102, "miss required parameter", "缺少必填参数"),
-	invalidParameter(103, "parameter value invalid", "参数不合法"),
-	noDataFound(104, "no data found", "对不起，没有找到相关数据"),
-	dataExist(105, "data exist", "任务已提交成功，请勿重复提交！"),
-	connectTimeOut(106, "connect timed out", "连接超时"),
-	serverError(389, "system error", "系统异常，请联系管理员"),
-	nullPointerExceptionError(416, "npe", "空指针异常"),
-	paramInValid(429, "param invalid", "参数异常，请仔细检查参数");
+	ok(1, "ok", "response.status.ok.desc"),
+	bizError(101, "biz error", "response.status.biz.desc"),
+	missParameter(102, "miss required parameter", "response.status.missParameter.desc"),
+	invalidParameter(103, "parameter value invalid", "response.status.invalidParameter.desc"),
+	noDataFound(104, "no data found", "response.status.noDataFound.desc"),
+	dataExist(105, "data exist", "response.status.dataExist.desc"),
+	connectTimeOut(106, "connect timed out", "response.status.connectTimeOut.desc"),
+	serverError(389, "system error", "response.status.serverError.desc"),
+	nullPointerExceptionError(416, "npe", "response.status.nullPointerExceptionError.desc"),
+	paramInValid(429, "param invalid", "response.status.paramInValid.desc");
 
 	private final int code;
 	private final String msg;
@@ -32,4 +33,8 @@ public enum RstStatus {
         }
         return null;
     }
+
+	public String getDesc() {
+		return MessageUtils.message(this.desc, (Object) null);
+	}
 }

@@ -57,8 +57,8 @@ class AccountServiceTest {
 
     @Test
     void testGetAccountsWithCards() {
-        Date lastUpdated = new Date();
-        PageInfo<AccountWithCardsDTO> result = accountService.getAccountsWithCards(lastUpdated, 1, 10);
+        String email = "test@example.com";
+        PageInfo<AccountWithCardsDTO> result = accountService.getAccountsWithCards(email, 1, 10);
         assertNotNull(result);
         assertEquals(0, result.getList().size());
     }

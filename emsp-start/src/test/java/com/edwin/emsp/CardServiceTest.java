@@ -38,7 +38,7 @@ class CardServiceTest {
         CardRequestDTO requestDTO = CardRequestDTO.builder()
                 .uid("USABC123456789")
                 .visibleNumber("45647").build();
-        boolean result = cardService.createCard(requestDTO);
+        Boolean result = cardService.createCard(requestDTO);
         assertTrue(result);
     }
 

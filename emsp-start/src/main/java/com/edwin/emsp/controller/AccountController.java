@@ -27,29 +27,29 @@ import java.util.Date;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-@Tag(name = "账号", description = "账号相关接口")  // 类级别分组
+@Tag(name = "api.group.name.account", description = "api.group.desc.account")  // 类级别分组
 public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Operation(summary = "创建账号", description = "创建账号")
+    @Operation(summary = "api.account.create.summary", description = "api.account.create.description")
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
     public Message<?> create(@Validated(CreateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {
         return Message.ok(accountService.createAccount(accountRequestDTO));
     }
 
-    @Operation(summary = "修改账号状态", description = "修改账号")
+    @Operation(summary = "api.status.account.update.summary", description = "api.status.account.update.description")
     @RequestMapping(value = "/account/status", method = RequestMethod.PATCH)
     public Message<?> update(@Validated(UpdateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {
         return Message.ok(accountService.updateAccount(accountRequestDTO));
     }
 
-    @Operation(summary = "分页查询账号", description = "分页查询账号")
+    @Operation(summary = "api.list.account.summary", description = "api.list.account.description")
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
-    public Message<PageInfo<AccountWithCardsDTO>> list(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date lastUpdated,
+    public Message<PageInfo<AccountWithCardsDTO>> list(@RequestParam(defaultValue = "")  String email,
                                                        @RequestParam(defaultValue = "1") int page,
                                                        @RequestParam(defaultValue = "10") int size) throws BizException {
-        PageInfo<AccountWithCardsDTO> accountsWithCards = accountService.getAccountsWithCards(lastUpdated, page, size);
+        PageInfo<AccountWithCardsDTO> accountsWithCards = accountService.getAccountsWithCards(email, page, size);
         return Message.ok(accountsWithCards);
     }
 

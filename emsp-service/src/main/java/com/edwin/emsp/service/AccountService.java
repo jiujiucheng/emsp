@@ -1,32 +1,22 @@
 package com.edwin.emsp.service;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.edwin.emsp.common.exception.BizException;
 import com.edwin.emsp.common.util.EmaidUtils;
 import com.edwin.emsp.common.util.MessageUtils;
-import com.edwin.emsp.dao.mapper.AccountMapper;
-import com.edwin.emsp.dao.mapper.CardMapper;
+import com.edwin.emsp.domain.service.AccountDomainService;
+import com.edwin.emsp.domain.service.CardDomainService;
 import com.edwin.emsp.model.aop.Cache;
 import com.edwin.emsp.model.dto.AccountRequestDTO;
 import com.edwin.emsp.model.dto.AccountWithCardsDTO;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.edwin.emsp.model.entity.Account;
 import com.edwin.emsp.model.entity.Card;
 import com.edwin.emsp.model.enums.AccountStatusType;
 import com.edwin.emsp.model.enums.CardStatusType;
-import com.edwin.emsp.model.event.model.AccountCreatedEvent;
-import com.edwin.emsp.model.event.model.AccountUpdatedEvent;
-import com.edwin.emsp.model.event.model.BaseEvent;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -42,16 +32,16 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class AccountService extends ServiceImpl<AccountMapper, Account> {
+public class AccountService  {
 
-    @Autowired
-    private ApplicationEventPublisher publisher;
+    private final AccountDomainService accountDomainService;
 
-    @Autowired
-    private AccountMapper accountMapper;
+    private final CardDomainService cardDomainService;
 
-    @Autowired
-    private CardMapper cardMapper;
+    public AccountService(AccountDomainService accountDomainService, CardDomainService cardDomainService) {
+        this.accountDomainService = accountDomainService;
+        this.cardDomainService = cardDomainService;
+    }
 
     /**
      *
@@ -60,30 +50,19 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
      */
     public boolean createAccount(AccountRequestDTO accountRequestDTO) {
         logger.info("create Account accountRequestDTO ： {}", JSON.toJSONString(accountRequestDTO));
-        LambdaQueryWrapper<Account> qw = new QueryWrapper<Account>()
-                .lambda()
-                .eq(Account::getEmail, accountRequestDTO.getEmail());
-        if (Objects.nonNull(super.getOne(qw))) {
+        Account existAccount = accountDomainService.getAccountByEmail(accountRequestDTO.getEmail());
+        if (Objects.nonNull(existAccount)) {
             throw new BizException(MessageUtils.message("error.email.exists", (Object) null));
         }
+        // 功能简单，暂不引入防腐层转换DTO 为 DO ,DO 转为 PO
         Account account = new Account();
-        Date createdTime = new Date();
         try{
             account.setEmail(accountRequestDTO.getEmail());
-            account.setCreateTime(createdTime);
-            super.save(account);
+            accountDomainService.createAccount(account);
         } catch (Exception e) {
             logger.error("create account exception ",e);
         }
 
-        //发送事件
-        AccountCreatedEvent accountCreatedEvent = AccountCreatedEvent.builder()
-                .email(account.getEmail())
-                .status(AccountStatusType.STATUS_CREATED.getDesc())
-                .createTime(createdTime)
-                .build();
-        BaseEvent<AccountCreatedEvent> event = new BaseEvent<>(this, "account created", accountCreatedEvent);
-        publisher.publishEvent(event);
         return true;
 
     }
@@ -95,13 +74,8 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
      */
     public boolean updateAccount(AccountRequestDTO accountRequestDTO) {
         logger.info("update Account accountRequestDTO ： {}", JSON.toJSONString(accountRequestDTO));
-        LambdaQueryWrapper<Account> qw = new QueryWrapper<Account>()
-                .lambda()
-                .eq(Account::getEmail, accountRequestDTO.getEmail());
-        Account account = super.getOne(qw);
-        String oldStatus = AccountStatusType.getDescByStatus(accountRequestDTO.getStatus());
-        Date lastUpdateTime = new Date();
-
+        Account account = accountDomainService.getAccountByEmail(accountRequestDTO.getEmail());
+        // 功能简单，暂不引入防腐层转换DTO 为 DO ,DO 转为 PO
         try{
             if (Objects.isNull(account)) {
                   throw new BizException(MessageUtils.message("error.account.not.exist", (Object) null));
@@ -113,67 +87,52 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
                     && !account.getStatus().equals(AccountStatusType.STATUS_ACTIVE.getAccountStatus())) {
                 throw new BizException(MessageUtils.message("error.account.status.update.inactive", (Object) null));
             }
-            account.setStatus(accountRequestDTO.getStatus());
             // 激活生成ContractId
             if (accountRequestDTO.getStatus().equals(AccountStatusType.STATUS_ACTIVE.getAccountStatus())) {
                 account.setContractId(EmaidUtils.generate());
             }
-            account.setUpdateTime(lastUpdateTime);
-            super.updateById(account);
             //激活、冻结账户的同时激活、冻结卡
-            List<Card> cards = cardMapper.selectCardsByEmail(account.getEmail());
+            List<Card> cards = cardDomainService.selectCardsByEmail(account.getEmail());
             if (!cards.isEmpty()) {
                 cards.forEach(card -> {
                     card.setStatus(CardStatusType.STATUS_INACTIVE.getCardStatus());
                     card.setUpdateTime(new Date());
                 });
-                cardMapper.batchUpdateCards(cards);
+                cardDomainService.batchUpdateCards(cards);
             }
+            accountDomainService.updateAccount(account,accountRequestDTO.getStatus());
 
         } catch (Exception e) {
             logger.error("update account status exception ",e);
         }
-        // 发送事件： 邮箱通知
-        AccountUpdatedEvent accountUpdatedEvent = AccountUpdatedEvent.builder()
-                .email(account.getEmail())
-                .oldStatus(oldStatus)
-                .newStatus(AccountStatusType.getDescByStatus(accountRequestDTO.getStatus()))
-                .updateTime(lastUpdateTime)
-                .build();
-        BaseEvent<AccountUpdatedEvent> accountEvent = new BaseEvent<>(this, "account update", accountUpdatedEvent);
-
-        publisher.publishEvent(accountEvent);
         return true;
     }
 
-    /**
+    /*
      * @param email String
      * @return Account
      */
     public Account getAccount(String email) {
-        LambdaQueryWrapper<Account> qw = new QueryWrapper<Account>()
-                .lambda()
-                .eq(Account::getEmail, email);
-        return super.getOne(qw);
+        return accountDomainService.getAccountByEmail(email);
     }
 
     /**分页查询账号及卡片
-     * @param lastUpdated Date
+     * @param email String
      * @param page int
      * @param size int
      * @return PageInfo<AccountWithCardsDTO>
      */
     @Cache(cacheNull = false,expiry = 60)
-    public PageInfo<AccountWithCardsDTO> getAccountsWithCards(Date lastUpdated, int page, int size) {
+    public PageInfo<AccountWithCardsDTO> getAccountsWithCards(String email, int page, int size) {
         PageInfo<AccountWithCardsDTO> info = null;
         try{
            PageHelper.startPage(page, size);
-           List<Account> accounts = accountMapper.selectAccountsByLastUpdated(lastUpdated);
+           List<Account> accounts = accountDomainService.findAccountsByEmail(email);
 
            List<String> emails = accounts.stream()
                    .map(Account::getEmail)
                    .collect(Collectors.toList());
-           List<Card> cards = !emails.isEmpty() ? cardMapper.selectCardsByEmails(emails) : Collections.emptyList();
+           List<Card> cards = !emails.isEmpty() ? cardDomainService.selectCardsByEmails(emails) : Collections.emptyList();
            Map<String, List<Card>> emailToCardsMap = cards.stream()
                    .collect(Collectors.groupingBy(Card::getEmail));
 

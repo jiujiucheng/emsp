@@ -34,11 +34,9 @@
         </dependency>
         <dependency>
             <groupId>com.edwin</groupId>
-            <artifactId>emsp-model</artifactId>
+            <artifactId>emsp-dao</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
-
     </dependencies>
     <dependencyManagement>
         <dependencies>

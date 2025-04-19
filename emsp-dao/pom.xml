@@ -10,10 +10,9 @@
 
     <artifactId>emsp-dao</artifactId>
     <dependencies>
-
         <dependency>
             <groupId>com.edwin</groupId>
-            <artifactId>emsp-model</artifactId>
+            <artifactId>emsp-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

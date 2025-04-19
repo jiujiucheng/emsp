@@ -19,10 +19,10 @@ import java.util.List;
 @Mapper
 public interface AccountMapper extends BaseMapper<Account> {
     /**
-     * @param lastUpdated Date
+     * @param email String
      * @return List<Account>
      */
-    List<Account> selectAccountsByLastUpdated(@Param("lastUpdated") Date lastUpdated);
+    List<Account> selectAccountsByEmail(@Param("email") String email);
 
 
 }

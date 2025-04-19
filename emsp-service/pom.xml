@@ -15,13 +15,16 @@
             <groupId>com.edwin</groupId>
             <artifactId>emsp-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.edwin</groupId>
             <artifactId>emsp-dao</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.edwin</groupId>
+            <artifactId>emsp-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <dependencyManagement>

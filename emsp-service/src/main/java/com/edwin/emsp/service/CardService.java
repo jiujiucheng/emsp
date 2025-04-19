@@ -3,6 +3,7 @@ package com.edwin.emsp.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.edwin.emsp.common.exception.BizException;
+import com.edwin.emsp.common.util.MessageUtils;
 import com.edwin.emsp.dao.mapper.CardMapper;
 import com.edwin.emsp.model.dto.CardRequestDTO;
 import com.edwin.emsp.model.entity.Account;
@@ -48,7 +49,7 @@ public class CardService extends ServiceImpl<CardMapper, Card> {
                 .eq(Card::getUid, cardRequestDTO.getUid())
                 .eq(Card::getVisibleNumber, cardRequestDTO.getVisibleNumber());
         if (Objects.nonNull(super.getOne(qw))) {
-            throw new BizException("重复重建");
+            throw new BizException(MessageUtils.message("error.card.repeat.created", (Object) null));
         }
         Card card = new Card();
         card.setUid(cardRequestDTO.getUid());
@@ -69,18 +70,20 @@ public class CardService extends ServiceImpl<CardMapper, Card> {
                 .eq(Card::getId, cardRequestDTO.getCardId());
         Card card = super.getOne(qw);
         if (Objects.isNull(card)) {
-            throw new BizException("卡号不存在");
+            throw new BizException(MessageUtils.message("error.card.not.exist", (Object) null));
         }
 
         if (cardRequestDTO.getStatus().equals(CardStatusType.STATUS_ACTIVE.getCardStatus())
                 && !card.getStatus().equals(CardStatusType.STATUS_INACTIVE.getCardStatus())
                 && !card.getStatus().equals(CardStatusType.STATUS_ASSIGNED.getCardStatus())
         ) {
-            throw new BizException("卡号不是失效状态或分配状态,不能激活");
+            throw new BizException(MessageUtils.message("error.card.op.not.active", (Object) null));
         }
         if (cardRequestDTO.getStatus().equals(CardStatusType.STATUS_INACTIVE.getCardStatus())
                 && !card.getStatus().equals(CardStatusType.STATUS_ACTIVE.getCardStatus())) {
-            throw new BizException("卡号不是激活状态,不能失效");
+            throw new BizException(MessageUtils.message("error.card.op.inactive", (Object) null));
+
+//            throw new BizException("卡号不是激活状态,不能失效");
         }
         String oldStatus = CardStatusType.getDescByStatus(cardRequestDTO.getStatus());
 
@@ -110,17 +113,25 @@ public class CardService extends ServiceImpl<CardMapper, Card> {
                 .eq(Card::getId, cardRequestDTO.getCardId());
         Card card = super.getOne(qw);
         if (Objects.isNull(card)) {
-            throw new BizException("卡号不存在");
+//            throw new BizException("卡号不存在");
+            throw new BizException(MessageUtils.message("error.card.not.exist", (Object) null));
+
         }
         if (!card.getStatus().equals(CardStatusType.STATUS_CREATED.getCardStatus())) {
-            throw new BizException("卡不是创建状态，不能分配");
+//            throw new BizException("卡不是创建状态，不能分配");
+            throw new BizException(MessageUtils.message("error.card.op.assign", (Object) null));
+
         }
         Account account = accountService.getAccount(cardRequestDTO.getEmail());
         if (Objects.isNull(account)) {
-            throw new BizException("邮箱错误");
+//            throw new BizException("邮箱错误");
+            throw new BizException(MessageUtils.message("error.account.not.exist", (Object) null));
+
         }
         if (!account.getStatus().equals(AccountStatusType.STATUS_ACTIVE.getAccountStatus())) {
-            throw new BizException("邮箱状态无效,请激活账号");
+//            throw new BizException("邮箱状态无效,请激活账号");
+            throw new BizException(MessageUtils.message("error.account.status.inactive", (Object) null));
+
         }
         card.setStatus(CardStatusType.STATUS_ASSIGNED.getCardStatus());
         card.setEmail(cardRequestDTO.getEmail());

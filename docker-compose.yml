@@ -6,12 +6,15 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/emsp?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_REDIS_HOST=redis
     ports:
       - "8080:8080"
     networks:
       - app-network
     depends_on:
       - db
+      - redis
+
   db:
     image: mysql:5.5
     environment:
@@ -29,6 +32,13 @@ services:
       interval: 5s
       timeout: 10s
       retries: 10
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

@@ -19,27 +19,28 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class CardRequestDTO {
 
-    @NotNull(message = "cardId不能为空", groups = {AssignGroup.class})
+    @NotNull(message = "{card_id.not.be.empty}", groups = {AssignGroup.class})
     private Integer cardId;
 
-    @NotEmpty(message = "email不能为空", groups = {AssignGroup.class})
+    @NotEmpty(message = "{email.can.not.be.empty}", groups = {AssignGroup.class})
+    @Length(min = 6,max = 18,message = "{email.length.invalid}", groups = {CreateGroup.class, UpdateGroup.class})
     @Pattern(
-            regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
-            message = "邮箱格式无效",
+            regexp = "^[a-zA-Z0-9_]+@[a-zA-Z0-9_]+\\.[a-zA-Z]{2,6}$",
+            message = "{email.format.invalid}",
             groups = {UpdateGroup.class}
     )
     private String email;
 
-    @NotBlank(message = "uid不能为空", groups = {CreateGroup.class})
+    @NotBlank(message = "{card.uid.not.be.blank}", groups = {CreateGroup.class})
     @ValidUid(groups = {CreateGroup.class})
     private String uid;
 
-    @NotBlank(message = "卡号不能为空", groups = {CreateGroup.class})
-    @Length(min = 8, max = 64, message = "卡号长度必须在[8,64]", groups = {CreateGroup.class})
+    @NotBlank(message = "{card.visible_number.blank}", groups = {CreateGroup.class})
+    @Length(min = 8, max = 64, message = "{card.visible_number.invalid}", groups = {CreateGroup.class})
     private String visibleNumber;
 
-    @NotNull(message = "status不能为空", groups = {UpdateGroup.class})
-    @Min(value = 3, message = "status 无效", groups = {UpdateGroup.class})
-    @Max(value = 4, message = "status 无效", groups = {UpdateGroup.class})
+    @NotNull(message = "card.status.not.null", groups = {UpdateGroup.class})
+    @Min(value = 3, message = "card.status.not.invalid", groups = {UpdateGroup.class})
+    @Max(value = 4, message = "card.status.not.invalid", groups = {UpdateGroup.class})
     private Integer status;
 }

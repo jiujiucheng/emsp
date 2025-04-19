@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.edwin.emsp.common.exception.BizException;
 import com.edwin.emsp.common.util.EmaidUtils;
+import com.edwin.emsp.common.util.MessageUtils;
 import com.edwin.emsp.dao.mapper.AccountMapper;
 import com.edwin.emsp.dao.mapper.CardMapper;
+import com.edwin.emsp.model.aop.Cache;
 import com.edwin.emsp.model.dto.AccountRequestDTO;
 import com.edwin.emsp.model.dto.AccountWithCardsDTO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -60,7 +64,7 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
                 .lambda()
                 .eq(Account::getEmail, accountRequestDTO.getEmail());
         if (Objects.nonNull(super.getOne(qw))) {
-            throw new BizException("邮箱已存在");
+            throw new BizException(MessageUtils.message("error.email.exists", (Object) null));
         }
         Account account = new Account();
         Date createdTime = new Date();
@@ -100,14 +104,14 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
 
         try{
             if (Objects.isNull(account)) {
-                throw new BizException("账号不存在");
+                  throw new BizException(MessageUtils.message("error.account.not.exist", (Object) null));
             }
             if (accountRequestDTO.getStatus().equals(account.getStatus())) {
-                throw new BizException("修改账号不能重复操作");
+                throw new BizException(MessageUtils.message("error.account.status.duplicate", (Object) null));
             }
             if (accountRequestDTO.getStatus().equals(AccountStatusType.STATUS_INACTIVE.getAccountStatus())
                     && !account.getStatus().equals(AccountStatusType.STATUS_ACTIVE.getAccountStatus())) {
-                throw new BizException("账号不是激活状态,不能失效");
+                throw new BizException(MessageUtils.message("error.account.status.update.inactive", (Object) null));
             }
             account.setStatus(accountRequestDTO.getStatus());
             // 激活生成ContractId
@@ -159,6 +163,7 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
      * @param size int
      * @return PageInfo<AccountWithCardsDTO>
      */
+    @Cache(cacheNull = false,expiry = 60)
     public PageInfo<AccountWithCardsDTO> getAccountsWithCards(Date lastUpdated, int page, int size) {
         PageInfo<AccountWithCardsDTO> info = null;
         try{

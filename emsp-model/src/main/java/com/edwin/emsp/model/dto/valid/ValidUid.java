@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ValidUidValidator.class) // 指定校验器
 public @interface ValidUid {
-    String message() default "uid格式无效"; // 默认错误消息
+    String message() default "{card.uid.format.invalid}"; // 默认错误消息
 
     Class<?>[] groups() default {};
 

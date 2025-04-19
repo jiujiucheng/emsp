@@ -3,10 +3,8 @@ package com.edwin.emsp;
 import com.edwin.emsp.common.util.EmaidUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.TransactionUsageException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest(classes = EmspApplication.class)
 class EmspApplicationTests {

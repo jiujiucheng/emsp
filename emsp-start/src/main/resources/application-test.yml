@@ -10,6 +10,15 @@ spring:
       name: jiucheng
       password: 123456
       roles: admin
+  messages:
+    basename: messages
+    encoding: utf-8
+    fallback-to-system-locale: true
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:127.0.0.1}
+      port: ${SPRING_REDIS_PORT:6379}
+      password:
 logging:
   level:
     root: INFO
@@ -23,6 +32,7 @@ pagehelper:
   helper-dialect: mysql
   reasonable: true
   support-methods-argument: true
+
 springdoc:
   swagger-ui:
     path: /api-docs

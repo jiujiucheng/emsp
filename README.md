@@ -44,3 +44,4 @@ emsp项目，使用传统MVC风格的项目代码布局，Maven版
 ## TODO:
 1. spring security 细粒度权限控制
 2. more unit tests
+3. 国际化遗漏

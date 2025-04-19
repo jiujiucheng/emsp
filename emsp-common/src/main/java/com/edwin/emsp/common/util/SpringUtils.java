@@ -27,9 +27,7 @@ public class SpringUtils implements ApplicationContextAware {
      * @param <T> Bean类型
      */
     public static <T> T getBean(Class<T> clazz) {
-        if (applicationContext == null) {
-            throw new IllegalStateException("ApplicationContext has not been initialized");
-        }
+        checkApplicationContext();
         return applicationContext.getBean(clazz);
     }
 
@@ -39,9 +37,16 @@ public class SpringUtils implements ApplicationContextAware {
      * @return Bean实例
      */
     public static Object getBean(String beanName) {
+        checkApplicationContext();
+        return applicationContext.getBean(beanName);
+    }
+    
+    /**
+     * 检查ApplicationContext是否已初始化
+     */
+    private static void checkApplicationContext() {
         if (applicationContext == null) {
             throw new IllegalStateException("ApplicationContext has not been initialized");
         }
-        return applicationContext.getBean(beanName);
     }
 }

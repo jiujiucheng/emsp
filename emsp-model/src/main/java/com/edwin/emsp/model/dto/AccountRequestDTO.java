@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
+
 
 /**
  * @Author: jiucheng
@@ -15,7 +17,9 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 @Builder
-public class AccountRequestDTO {
+public class AccountRequestDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotEmpty(message = "{email.can.not.be.empty}", groups = {CreateGroup.class, UpdateGroup.class})
     @Length(min = 6,max = 18,message = "{email.length.invalid}", groups = {CreateGroup.class, UpdateGroup.class})

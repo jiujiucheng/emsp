@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
+
 
 /**
  * @Author: jiucheng
@@ -17,7 +19,9 @@ import org.hibernate.validator.constraints.Length;
  */
 @Data
 @Builder
-public class CardRequestDTO {
+public class CardRequestDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotNull(message = "{card_id.not.be.empty}", groups = {AssignGroup.class})
     private Integer cardId;

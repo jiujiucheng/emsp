@@ -25,24 +25,24 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-@Tag(name = "卡", description = "卡相关接口")  // 类级别分组
+@Tag(name = "api.group.name.card", description = "api.group.desc.card")  // 类级别分组
 public class CardController {
     @Autowired
     private CardService cardService;
 
-    @Operation(summary = "创建卡", description = "创建卡")
+    @Operation(summary = "api.card.create.summary", description = "api.card.create.description")
     @RequestMapping(value = "/cards", method = RequestMethod.POST)
     public Message<?> create(@Validated(CreateGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
         return Message.ok(cardService.createCard(cardRequestDTO));
     }
 
-    @Operation(summary = "修改卡状态", description = "修改卡状态")
+    @Operation(summary = "api.status.card.update.summary", description = "api.status.card.update.description")
     @RequestMapping(value = "/card/status", method = RequestMethod.PATCH)
     public Message<?> changeCardStatus(@Validated(UpdateGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
         return Message.ok(cardService.changeCardStatus(cardRequestDTO));
     }
 
-    @Operation(summary = "分配卡", description = "绑定卡到账户")
+    @Operation(summary = "api.assign.card.summary", description = "api.assign.card.description")
     @RequestMapping(value = "/card/assign", method = RequestMethod.PATCH)
     public Message<?> assignCard(@Validated(AssignGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
         return Message.ok(cardService.assignCardToAccount(cardRequestDTO));

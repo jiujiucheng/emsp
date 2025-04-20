@@ -25,8 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -121,6 +119,7 @@ public class AccountService extends ServiceImpl<AccountMapper, Account> {
             account.setUpdateTime(lastUpdateTime);
             super.updateById(account);
             //激活、冻结账户的同时激活、冻结卡
+            //这部分代码耦合有些紧，存在优化空间。实际生产环境中，该部分逻辑事件驱动可以更深入些，解耦也更明显，但存在一致性问题，需要补偿逻辑，暂不深入
             List<Card> cards = cardMapper.selectCardsByEmail(account.getEmail());
             if (!cards.isEmpty()) {
                 cards.forEach(card -> {

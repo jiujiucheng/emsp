@@ -18,7 +18,8 @@ public enum RstStatus {
 	connectTimeOut(106, "connect timed out", "response.status.connectTimeOut.desc"),
 	serverError(389, "system error", "response.status.serverError.desc"),
 	nullPointerExceptionError(416, "npe", "response.status.nullPointerExceptionError.desc"),
-	paramInValid(429, "param invalid", "response.status.paramInValid.desc");
+	paramInValid(429, "param invalid", "response.status.paramInValid.desc"),
+	forbidden(403,"access denied","response.forbidden.desc");
 
 	private final int code;
 	private final String msg;

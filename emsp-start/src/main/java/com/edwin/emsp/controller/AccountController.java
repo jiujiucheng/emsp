@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +32,14 @@ import java.util.Date;
 public class AccountController {
     @Autowired
     private AccountService accountService;
-
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "api.account.create.summary", description = "api.account.create.description")
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
     public Message<?> create(@Validated(CreateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {
         return Message.ok(accountService.createAccount(accountRequestDTO));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "api.status.account.update.summary", description = "api.status.account.update.description")
     @RequestMapping(value = "/account/status", method = RequestMethod.PATCH)
     public Message<?> update(@Validated(UpdateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {

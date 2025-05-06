@@ -1,6 +1,6 @@
 package com.edwin.emsp.domain.repository;
 
-import com.edwin.emsp.model.entity.Account;
+import com.edwin.emsp.domain.model.entity.Account;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edwin.emsp.dao.mapper.AccountMapper">
     <!-- 分页查询账户 -->
-    <select id="selectAccountsByEmail" resultType="Account">
+    <select id="selectAccountsByEmail" resultType="com.edwin.emsp.domain.model.entity.Account">
         SELECT id,
                email,
                contract_id AS contractId,

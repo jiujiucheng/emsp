@@ -24,20 +24,18 @@ emsp项目，mvc2ddd 轻改版，Maven版
 
 - Controller层 ：处理HTTP请求，调用Service层，返回统一响应格式。
 - Service层 ：应用服务层，编排领域服务。
-- domain层（领域层）： 领域服务层，定义仓储接口（依赖model)
-- Model层（领域层） ：包含实体类、DTO、VO等数据模型。
+- domain层（领域层）： 领域服务，定义领域仓储接口、领域模型
 - DAO层（基础设施层） ：实现domain层仓储（dip）,负责与数据库交互，使用MyBatis Plus进行数据访问，
 - Configuration ：配置类，如Spring Security配置、Redis配置等。
-- Global层 ：全局异常处理、统一响应格式等。
-- Common层 ：公共工具类、异常类、常量等。
+- Global ：全局异常处理、统一响应格式等。
+- Common ：公共工具类、异常类、常量等。
 ## 模块划分
 项目采用多模块设计，主要模块包括：
 
 - emsp-start ：启动模块，包含Controller、Configuration等。
-- emsp-model ：数据模型模块，包含DTO、VO、实体、值对象、枚举、事件等。
-- emsp-dao ：数据访问模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
+- emsp-dao ：基础设施模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
 - emsp-service ：应用服务，依赖domain
-- emsp-domain:  领域服务，实现核心业务逻辑
+- emsp-domain:  领域服务，实现核心业务逻辑；数据模型模块，包含DTO、VO、实体、值对象、枚举、事件等。
 - emsp-common ：公共模块，包含工具类、异常类、常量等。
 ## 核心流程
 ### 请求流程概述

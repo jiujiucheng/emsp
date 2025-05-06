@@ -1,11 +1,11 @@
 package com.edwin.emsp.domain.service;
 
 import com.edwin.emsp.domain.repository.AccountRepository;
-import com.edwin.emsp.model.entity.Account;
-import com.edwin.emsp.model.enums.AccountStatusType;
-import com.edwin.emsp.model.event.model.AccountCreatedEvent;
-import com.edwin.emsp.model.event.model.AccountUpdatedEvent;
-import com.edwin.emsp.model.event.model.BaseEvent;
+import com.edwin.emsp.domain.model.entity.Account;
+import com.edwin.emsp.domain.model.enums.AccountStatusType;
+import com.edwin.emsp.domain.model.event.model.AccountCreatedEvent;
+import com.edwin.emsp.domain.model.event.model.AccountUpdatedEvent;
+import com.edwin.emsp.domain.model.event.model.BaseEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 

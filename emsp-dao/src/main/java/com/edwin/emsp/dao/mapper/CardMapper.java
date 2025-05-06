@@ -1,7 +1,7 @@
 package com.edwin.emsp.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.edwin.emsp.model.entity.Card;
+import com.edwin.emsp.domain.model.entity.Card;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

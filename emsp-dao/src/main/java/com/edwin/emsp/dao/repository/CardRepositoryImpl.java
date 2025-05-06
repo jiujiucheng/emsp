@@ -3,7 +3,7 @@ package com.edwin.emsp.dao.repository;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.edwin.emsp.dao.mapper.CardMapper;
 import com.edwin.emsp.domain.repository.CardRepository;
-import com.edwin.emsp.model.entity.Card;
+import com.edwin.emsp.domain.model.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

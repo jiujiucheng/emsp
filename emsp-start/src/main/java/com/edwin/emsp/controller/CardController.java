@@ -1,11 +1,11 @@
 package com.edwin.emsp.controller;
 
 import com.edwin.emsp.common.exception.BizException;
-import com.edwin.emsp.model.dto.CardRequestDTO;
-import com.edwin.emsp.model.dto.validgroup.AssignGroup;
-import com.edwin.emsp.model.dto.validgroup.CreateGroup;
-import com.edwin.emsp.model.dto.validgroup.UpdateGroup;
-import com.edwin.emsp.model.vo.message.Message;
+import com.edwin.emsp.domain.model.dto.CardRequestDTO;
+import com.edwin.emsp.domain.model.dto.validgroup.AssignGroup;
+import com.edwin.emsp.domain.model.dto.validgroup.CreateGroup;
+import com.edwin.emsp.domain.model.dto.validgroup.UpdateGroup;
+import com.edwin.emsp.domain.model.message.Message;
 import com.edwin.emsp.service.CardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

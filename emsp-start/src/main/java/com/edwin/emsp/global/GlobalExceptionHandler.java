@@ -1,8 +1,8 @@
 package com.edwin.emsp.global;
 
 import com.edwin.emsp.common.exception.BizException;
-import com.edwin.emsp.model.vo.message.Message;
-import com.edwin.emsp.model.vo.message.RstStatus;
+import com.edwin.emsp.domain.model.message.Message;
+import com.edwin.emsp.domain.model.message.RstStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

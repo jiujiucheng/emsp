@@ -1,11 +1,10 @@
 package com.edwin.emsp.dao.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.edwin.emsp.model.entity.Account;
+import com.edwin.emsp.domain.model.entity.Account;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 /**

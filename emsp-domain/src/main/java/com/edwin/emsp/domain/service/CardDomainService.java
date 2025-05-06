@@ -1,9 +1,9 @@
 package com.edwin.emsp.domain.service;
 
 import com.edwin.emsp.domain.repository.CardRepository;
-import com.edwin.emsp.model.entity.Card;
-import com.edwin.emsp.model.event.model.BaseEvent;
-import com.edwin.emsp.model.event.model.CardUpdatedEvent;
+import com.edwin.emsp.domain.model.entity.Card;
+import com.edwin.emsp.domain.model.event.model.BaseEvent;
+import com.edwin.emsp.domain.model.event.model.CardUpdatedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +70,7 @@ public class CardDomainService {
                 .oldStatus(oldStatus)
                 .newStatus(status.toString())
                 .build();
-        BaseEvent<com.edwin.emsp.model.event.model.CardUpdatedEvent> event = new BaseEvent<>(this, "card status updated", cardUpdatedEvent);
+        BaseEvent<CardUpdatedEvent> event = new BaseEvent<>(this, "card status updated", cardUpdatedEvent);
 
         publisher.publishEvent(event);
     }

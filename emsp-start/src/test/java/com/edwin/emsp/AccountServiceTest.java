@@ -7,10 +7,10 @@ package com.edwin.emsp;
  */
 
 import com.edwin.emsp.dao.mapper.AccountMapper;
-import com.edwin.emsp.model.dto.AccountRequestDTO;
-import com.edwin.emsp.model.dto.AccountWithCardsDTO;
-import com.edwin.emsp.model.entity.Account;
-import com.edwin.emsp.model.enums.AccountStatusType;
+import com.edwin.emsp.domain.model.dto.AccountRequestDTO;
+import com.edwin.emsp.domain.model.dto.AccountWithCardsDTO;
+import com.edwin.emsp.domain.model.entity.Account;
+import com.edwin.emsp.domain.model.enums.AccountStatusType;
 import com.edwin.emsp.service.AccountService;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 

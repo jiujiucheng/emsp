@@ -2,23 +2,20 @@ package com.edwin.emsp.controller;
 
 import com.edwin.emsp.common.exception.BizException;
 
-import com.edwin.emsp.model.dto.AccountRequestDTO;
-import com.edwin.emsp.model.dto.AccountWithCardsDTO;
-import com.edwin.emsp.model.dto.validgroup.CreateGroup;
-import com.edwin.emsp.model.dto.validgroup.UpdateGroup;
-import com.edwin.emsp.model.vo.message.Message;
+import com.edwin.emsp.domain.model.dto.AccountRequestDTO;
+import com.edwin.emsp.domain.model.dto.AccountWithCardsDTO;
+import com.edwin.emsp.domain.model.dto.validgroup.CreateGroup;
+import com.edwin.emsp.domain.model.dto.validgroup.UpdateGroup;
+import com.edwin.emsp.domain.model.message.Message;
 import com.edwin.emsp.service.AccountService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 
 /**
  * @Author: jiucheng
@@ -48,7 +45,7 @@ public class AccountController {
 
     @Operation(summary = "api.list.account.summary", description = "api.list.account.description")
     @RequestMapping(value = "/accounts", method = RequestMethod.GET)
-    public Message<PageInfo<AccountWithCardsDTO>> list(@RequestParam(defaultValue = "")  String email,
+    public Message<PageInfo<AccountWithCardsDTO>> list(@RequestParam(defaultValue = "",required = false)  String email,
                                                        @RequestParam(defaultValue = "1") int page,
                                                        @RequestParam(defaultValue = "10") int size) throws BizException {
         PageInfo<AccountWithCardsDTO> accountsWithCards = accountService.getAccountsWithCards(email, page, size);

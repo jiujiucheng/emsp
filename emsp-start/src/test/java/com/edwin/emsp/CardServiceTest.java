@@ -7,8 +7,8 @@ package com.edwin.emsp;
  */
 
 import com.edwin.emsp.dao.mapper.CardMapper;
-import com.edwin.emsp.model.dto.CardRequestDTO;
-import com.edwin.emsp.model.enums.CardStatusType;
+import com.edwin.emsp.domain.model.dto.CardRequestDTO;
+import com.edwin.emsp.domain.model.enums.CardStatusType;
 import com.edwin.emsp.service.AccountService;
 import com.edwin.emsp.service.CardService;
 import org.junit.jupiter.api.Test;

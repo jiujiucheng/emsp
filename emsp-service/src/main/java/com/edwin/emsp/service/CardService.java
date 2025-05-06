@@ -3,11 +3,11 @@ package com.edwin.emsp.service;
 import com.edwin.emsp.common.exception.BizException;
 import com.edwin.emsp.common.util.MessageUtils;
 import com.edwin.emsp.domain.service.CardDomainService;
-import com.edwin.emsp.model.dto.CardRequestDTO;
-import com.edwin.emsp.model.entity.Account;
-import com.edwin.emsp.model.entity.Card;
-import com.edwin.emsp.model.enums.AccountStatusType;
-import com.edwin.emsp.model.enums.CardStatusType;
+import com.edwin.emsp.domain.model.dto.CardRequestDTO;
+import com.edwin.emsp.domain.model.entity.Account;
+import com.edwin.emsp.domain.model.entity.Card;
+import com.edwin.emsp.domain.model.enums.AccountStatusType;
+import com.edwin.emsp.domain.model.enums.CardStatusType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,11 +41,6 @@ public class CardService  {
      * @return boolean
      */
     public Boolean createCard(CardRequestDTO cardRequestDTO) {
-       /* LambdaQueryWrapper<Card> qw = new QueryWrapper<Card>()
-                .lambda()
-                .eq(Card::getUid, cardRequestDTO.getUid())
-                .eq(Card::getVisibleNumber, cardRequestDTO.getVisibleNumber());*/
-
         Card existCard = cardDomainService.findCardByUidAndVisibleNumber(cardRequestDTO.getUid(), cardRequestDTO.getVisibleNumber());
         if (Objects.nonNull(existCard)) {
             throw new BizException(MessageUtils.message("error.card.repeat.created", (Object) null));

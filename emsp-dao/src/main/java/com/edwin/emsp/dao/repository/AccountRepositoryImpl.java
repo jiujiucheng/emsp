@@ -3,7 +3,7 @@ package com.edwin.emsp.dao.repository;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.edwin.emsp.dao.mapper.AccountMapper;
 import com.edwin.emsp.domain.repository.AccountRepository;
-import com.edwin.emsp.model.entity.Account;
+import com.edwin.emsp.domain.model.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

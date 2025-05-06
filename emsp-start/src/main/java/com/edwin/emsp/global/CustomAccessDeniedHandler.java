@@ -1,8 +1,7 @@
 package com.edwin.emsp.global;
 
-import com.alibaba.fastjson.JSON;
-import com.edwin.emsp.model.vo.message.Message;
-import com.edwin.emsp.model.vo.message.RstStatus;
+import com.edwin.emsp.domain.model.message.Message;
+import com.edwin.emsp.domain.model.message.RstStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -22,7 +22,7 @@ logging:
 
 mybatis-plus:
   mapper-locations: classpath*:/mappers/*.xml
-  type-aliases-package: com.edwin.emsp.model.entity
+  type-aliases-package: com.edwin.emsp.domain.model.entity
 pagehelper:
   helper-dialect: mysql
   reasonable: true

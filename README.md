@@ -1,7 +1,7 @@
 emsp
 =============================
 
-emsp项目，使用传统MVC风格的项目代码布局，Maven版
+emsp项目，mvc2ddd 轻改版，Maven版
 ## 需求反解
 1. 系统以管理员的视角操作账号、卡，实现逻辑自洽。不开放注册。提供管理员登陆入口。不登录不能做任何操作，包括swagger。
 2. 账号、卡片修改状态限制激活（Activated）、冻结（Deactivated），账号修改状态联动卡片的冻结、解冻。
@@ -19,32 +19,37 @@ emsp项目，使用传统MVC风格的项目代码布局，Maven版
 | CI/CD   | GitHub Actions                   | 自动化构建、测试、部署                |
 | 安全认证与授权 | Spring Security                  | 默认登录行为，基本功能，未做个性化定制，仅为效果演示 |
  | 缓存与分布式锁 | Redis                            | redisson                   |
-## 架构分层
-项目采用传统的MVC分层架构，主要分为以下几层：
+## 架构分层（mvc2ddd）
+项目基于MVC分层架构 进行了ddd改造 ，主要分为以下几层：
 
 - Controller层 ：处理HTTP请求，调用Service层，返回统一响应格式。
-- Service层 ：实现核心业务逻辑，调用DAO层进行数据操作。
-- DAO层 ：负责与数据库交互，使用MyBatis Plus进行数据访问。
-- Model层 ：包含实体类、DTO、VO等数据模型。
-- Configuration层 ：配置类，如Spring Security配置、Redis配置等。
+- Service层 ：应用服务层，编排领域服务。
+- domain层（领域层）： 领域服务层，定义仓储接口（依赖model)
+- Model层（领域层） ：包含实体类、DTO、VO等数据模型。
+- DAO层（基础设施层） ：实现domain层仓储（dip）,负责与数据库交互，使用MyBatis Plus进行数据访问，
+- Configuration ：配置类，如Spring Security配置、Redis配置等。
 - Global层 ：全局异常处理、统一响应格式等。
 - Common层 ：公共工具类、异常类、常量等。
 ## 模块划分
 项目采用多模块设计，主要模块包括：
 
-- emsp-start ：启动模块，包含Controller、Service、Configuration等。
-- emsp-model ：数据模型模块，包含实体类、DTO、VO等。
-- emsp-dao ：数据访问模块，包含MyBatis Plus的Mapper接口。
-- emsp-service ：业务逻辑模块，包含Service接口和实现类。
+- emsp-start ：启动模块，包含Controller、Configuration等。
+- emsp-model ：数据模型模块，包含DTO、VO、实体、值对象、枚举、事件等。
+- emsp-dao ：数据访问模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
+- emsp-service ：应用服务，依赖domain
+- emsp-domain:  领域服务，实现核心业务逻辑
 - emsp-common ：公共模块，包含工具类、异常类、常量等。
 ## 核心流程
-1. 请求流程 ：
-
-   - 客户端发起HTTP请求 → Controller层接收请求 → 调用Service层处理业务逻辑 → 调用DAO层访问数据库 → 返回统一响应格式。
-2. 安全流程 ：
+### 请求流程概述
+   1. 请求入口 ：请求从控制器（如 AccountController ）进入。
+   2. 应用服务层 ：控制器调用应用服务（如 AccountService ），处理业务逻辑。
+   3. 领域服务层 ：应用服务编排领域服务（如 AccountDomainService ），执行核心业务逻辑。
+   4. 基础设施层 ：领域服务通过仓储接口（如 AccountRepository ）访问数据，基础设施层（如 AccountRepositoryImpl ）实现具体的数据访问逻辑。
+   5. 返回响应 ：处理完成后，返回响应给客户端。
+### 安全流程 ：
 
    - 用户登录 → Spring Security进行认证 → 根据角色授权访问资源 → 未授权时触发 CustomAccessDeniedHandler 。
-3. 异常流程 ：
+###  异常流程 ：
    - 发生异常 → GlobalExceptionHandler 捕获异常 → 返回统一错误响应。
 ## 架构
 ![架构](docs/images/Architecture.png)
@@ -58,7 +63,7 @@ emsp项目，使用传统MVC风格的项目代码布局，Maven版
 |---------|---------|---------------------|-------------------------------|
 | 创建账号    | POST    | /api/accounts       |                               |
 | 修改账号状态  | PATCH   | /api/account/status | 只能修改两种状态：activiated,inactived |
-| 查询账号及卡片 | GET     | /api/accounts       | PageHelper分页查询                |
+| 查询账号及卡片 | GET     | /api/accounts       | PageHelper分页查询，支持email筛选      |
 | 创建卡片    | POST    | /api/cards          |                               |
 | 修改卡片状态  | PATCH    | /api/card/status    | 只能修改两种状态：activiated,inactived |
 | 分配卡     | PATCH    | /api/card/assign    |                               |
@@ -71,5 +76,7 @@ emsp项目，使用传统MVC风格的项目代码布局，Maven版
 6. i18n 支持国际化：错误码、验证、swagger
 7. 横切缓存，按需注解
 8. 权限体系：用户角色分级，细粒度权限控制(方法级)
+9. 轻量化ddd 改造
 ## TODO:
-1.more unit tests
+1. more unit tests 
+2. 引入防腐层 DTO -> DO ->  PO

@@ -35,7 +35,7 @@ emsp项目，mvc2ddd 轻改版，Maven版
 - emsp-start ：启动模块，包含Controller、Configuration等。
 - emsp-dao ：基础设施模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
 - emsp-service ：应用服务，依赖domain
-- emsp-domain:  领域服务，实现核心业务逻辑；数据模型模块，包含DTO、VO、实体、值对象、枚举、事件等。
+- emsp-domain:  领域服务，实现核心业务逻辑；领域模型，包含DTO、VO、实体、值对象、枚举、事件等。
 - emsp-common ：公共模块，包含工具类、异常类、常量等。
 ## 核心流程
 ### 请求流程概述

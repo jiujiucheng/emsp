@@ -1,6 +1,6 @@
 package com.edwin.emsp.configuration;
 
-import com.edwin.emsp.global.CustomAccessDeniedHandler;
+import com.edwin.emsp.trigger.http.global.CustomAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

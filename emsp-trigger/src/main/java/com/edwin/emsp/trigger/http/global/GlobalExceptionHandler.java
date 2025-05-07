@@ -1,4 +1,4 @@
-package com.edwin.emsp.global;
+package com.edwin.emsp.trigger.http.global;
 
 import com.edwin.emsp.common.exception.BizException;
 import com.edwin.emsp.domain.model.message.Message;

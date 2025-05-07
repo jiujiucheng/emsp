@@ -12,24 +12,11 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.edwin</groupId>
-            <artifactId>emsp-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.edwin</groupId>
-            <artifactId>emsp-service</artifactId>
+            <artifactId>emsp-trigger</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -37,6 +24,8 @@
             <artifactId>emsp-dao</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

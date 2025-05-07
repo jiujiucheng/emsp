@@ -22,26 +22,27 @@ emsp项目，mvc2ddd 轻改版，Maven版
 ## 架构分层（mvc2ddd）
 项目基于MVC分层架构 进行了ddd改造 ，主要分为以下几层：
 
-- Controller层 ：处理HTTP请求，调用Service层，返回统一响应格式。
+- trigger层 ：提供接口实现、消息接收、任务执处理。
 - Service层 ：应用服务层，编排领域服务。
 - domain层（领域层）： 领域服务，定义领域仓储接口、领域模型
 - DAO层（基础设施层） ：实现domain层仓储（dip）,负责与数据库交互，使用MyBatis Plus进行数据访问，
-- Configuration ：配置类，如Spring Security配置、Redis配置等。
-- Global ：全局异常处理、统一响应格式等。
-- Common ：公共工具类、异常类、常量等。
+  - Configuration ：配置类，如Spring Security配置、Redis配置等。
+  - Global ：全局异常处理、统一响应格式等。
+  - Common ：公共工具类、异常类、常量等。
 ## 模块划分
 项目采用多模块设计，主要模块包括：
 
-- emsp-start ：启动模块，包含Controller、Configuration等。
-- emsp-dao ：基础设施模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
-- emsp-service ：应用服务，依赖domain
-- emsp-domain:  领域服务，实现核心业务逻辑；领域模型，包含DTO、VO、实体、值对象、枚举、事件等。
-- emsp-common ：公共模块，包含工具类、异常类、常量等。
+- emsp-start ：启动模块，包含AOP、Configuration等。
+- emsp-trigger：触发器模块，一般也被叫做 adapter 适配器层，提供接口实现、消息接收、任务执行
+- emsp-dao ： 数据持久化模块，包含MyBatis Plus的Mapper接口、Repository接口，反向依赖domain
+- emsp-service ：应用服务模块，依赖domain
+- emsp-domain:  领域服务模块，实现核心业务逻辑；领域模型，包含DTO、VO、实体、值对象、枚举、事件等。
+- emsp-common ：公共定义模块，包含工具类、异常类、常量等。
 ## 核心流程
 ### 请求流程概述
    1. 请求入口 ：请求从控制器（如 AccountController ）进入。
-   2. 应用服务层 ：控制器调用应用服务（如 AccountService ），处理业务逻辑。
-   3. 领域服务层 ：应用服务编排领域服务（如 AccountDomainService ），执行核心业务逻辑。
+   2. 应用服务层 ：控制器调用应用服务（如 AccountService ），应用服务编排领域服务（如 AccountDomainService ）处理业务逻辑。
+   3. 领域服务层 ：执行核心业务逻辑。
    4. 基础设施层 ：领域服务通过仓储接口（如 AccountRepository ）访问数据，基础设施层（如 AccountRepositoryImpl ）实现具体的数据访问逻辑。
    5. 返回响应 ：处理完成后，返回响应给客户端。
 ### 安全流程 ：
@@ -50,7 +51,7 @@ emsp项目，mvc2ddd 轻改版，Maven版
 ###  异常流程 ：
    - 发生异常 → GlobalExceptionHandler 捕获异常 → 返回统一错误响应。
 ## 架构
-![架构](docs/images/Architecture.png)
+![架构](docs/images/ddd.png)
 ## RDBMS 设计
 参考 sql 文件夹init.sql
 

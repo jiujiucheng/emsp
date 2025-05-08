@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * <p>
- * 服务实现类
+ * 应用服务AccountService
  * </p>
  *
  * @author jiucheng

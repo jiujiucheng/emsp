@@ -3,7 +3,6 @@ package com.edwin.emsp.service;
 import com.edwin.emsp.common.exception.BizException;
 import com.edwin.emsp.common.util.MessageUtils;
 import com.edwin.emsp.domain.service.CardDomainService;
-import com.edwin.emsp.domain.model.dto.CardRequestDTO;
 import com.edwin.emsp.domain.model.entity.Account;
 import com.edwin.emsp.domain.model.entity.Card;
 import com.edwin.emsp.domain.model.enums.AccountStatusType;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 /**
  * <p>
- * 服务实现类
+ * 应用服务CardService
  * </p>
  *
  * @author jiucheng

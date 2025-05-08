@@ -12,6 +12,7 @@ import com.edwin.emsp.domain.model.dto.AccountWithCardsDTO;
 import com.edwin.emsp.domain.model.entity.Account;
 import com.edwin.emsp.domain.model.enums.AccountStatusType;
 import com.edwin.emsp.service.AccountService;
+import com.edwin.emsp.trigger.http.assembler.AccountAssembler;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ class AccountServiceTest {
     @Test
     void testCreateAccount() {
         AccountRequestDTO requestDTO = AccountRequestDTO.builder().email("test@example.com").build();
-        boolean result = accountService.createAccount(requestDTO);
+        boolean result = accountService.createAccount(AccountAssembler.toDO(requestDTO));
         assertTrue(result);
     }
 
@@ -49,7 +50,7 @@ class AccountServiceTest {
                 .build();
         requestDTO.setStatus(AccountStatusType.STATUS_ACTIVE.getAccountStatus());
 
-        boolean result = accountService.updateAccount(requestDTO);
+        boolean result = accountService.updateAccount(AccountAssembler.toDO(requestDTO));
         assertTrue(result);
     }
 

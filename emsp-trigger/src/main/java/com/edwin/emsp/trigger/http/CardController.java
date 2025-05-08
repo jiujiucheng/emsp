@@ -7,6 +7,7 @@ import com.edwin.emsp.domain.model.dto.validgroup.CreateGroup;
 import com.edwin.emsp.domain.model.dto.validgroup.UpdateGroup;
 import com.edwin.emsp.domain.model.message.Message;
 import com.edwin.emsp.service.CardService;
+import com.edwin.emsp.trigger.http.assembler.CardAssembler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -35,21 +36,21 @@ public class CardController {
     @Operation(summary = "api.card.create.summary", description = "api.card.create.description")
     @RequestMapping(value = "/cards", method = RequestMethod.POST)
     public Message<?> create(@Validated(CreateGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
-        return Message.ok(cardService.createCard(cardRequestDTO));
+        return Message.ok(cardService.createCard(CardAssembler.toDO(cardRequestDTO)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "api.status.card.update.summary", description = "api.status.card.update.description")
     @RequestMapping(value = "/card/status", method = RequestMethod.PATCH)
     public Message<?> changeCardStatus(@Validated(UpdateGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
-        return Message.ok(cardService.changeCardStatus(cardRequestDTO));
+        return Message.ok(cardService.changeCardStatus(CardAssembler.toDO(cardRequestDTO)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "api.assign.card.summary", description = "api.assign.card.description")
     @RequestMapping(value = "/card/assign", method = RequestMethod.PATCH)
     public Message<?> assignCard(@Validated(AssignGroup.class) @RequestBody CardRequestDTO cardRequestDTO) throws BizException {
-        return Message.ok(cardService.assignCardToAccount(cardRequestDTO));
+        return Message.ok(cardService.assignCardToAccount(CardAssembler.toDO(cardRequestDTO)));
     }
 
 }

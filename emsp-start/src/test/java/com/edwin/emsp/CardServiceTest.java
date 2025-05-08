@@ -11,6 +11,7 @@ import com.edwin.emsp.domain.model.dto.CardRequestDTO;
 import com.edwin.emsp.domain.model.enums.CardStatusType;
 import com.edwin.emsp.service.AccountService;
 import com.edwin.emsp.service.CardService;
+import com.edwin.emsp.trigger.http.assembler.CardAssembler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +39,7 @@ class CardServiceTest {
         CardRequestDTO requestDTO = CardRequestDTO.builder()
                 .uid("USABC123456789")
                 .visibleNumber("45647").build();
-        Boolean result = cardService.createCard(requestDTO);
+        Boolean result = cardService.createCard(CardAssembler.toDO(requestDTO));
         assertTrue(result);
     }
 
@@ -48,7 +49,7 @@ class CardServiceTest {
         CardRequestDTO requestDTO = CardRequestDTO.builder().cardId(1).build();
         requestDTO.setEmail("test@example.com");
 
-        boolean result = cardService.assignCardToAccount(requestDTO);
+        boolean result = cardService.assignCardToAccount(CardAssembler.toDO(requestDTO));
         assertTrue(result);
     }
 
@@ -57,7 +58,7 @@ class CardServiceTest {
         CardRequestDTO requestDTO = CardRequestDTO.builder().cardId(1).build();
         requestDTO.setStatus(CardStatusType.STATUS_ACTIVE.getCardStatus());
 
-        boolean result = cardService.changeCardStatus(requestDTO);
+        boolean result = cardService.changeCardStatus(CardAssembler.toDO(requestDTO));
         assertTrue(result);
     }
 }

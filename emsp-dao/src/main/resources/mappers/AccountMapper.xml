@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.edwin.emsp.dao.mapper.AccountMapper">
     <!-- 分页查询账户 -->
-    <select id="selectAccountsByEmail" resultType="com.edwin.emsp.domain.model.entity.Account">
+    <select id="selectAccountsByEmail" resultType="com.edwin.emsp.domain.repository.po.AccountPO">
         SELECT id,
-               email,
-               contract_id AS contractId,
-               status,
-               create_time AS createTime,
-               update_time AS updateTime
+        email,
+        contract_id AS contractId,
+        status,
+        create_time AS createTime,
+        update_time AS updateTime
         FROM emsp_account
         WHERE update_time &lt; NOW()
         <if test="email != null and email != ''">

@@ -1,70 +1,54 @@
 package com.edwin.emsp.domain.model.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.edwin.emsp.domain.model.enums.CardStatusType;
+import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * <p>
- *
- * </p>
- *
- * @author jiucheng
- * @since 2025-04-12
+ * @Author: jiucheng
+ * @Description: Card 领域实体
+ * @Date: 2025/4/14
  */
-@Getter
-@Setter
-@TableName("emsp_card")
-public class Card implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键ID
-     */
-    @TableId(value = "id", type = IdType.AUTO)
+@Data
+public class Card {
     private Integer id;
-
-    /**
-     * uid
-     */
-    @TableField("uid")
-    private String uid;
-
-    /**
-     * 卡号
-     */
-    @TableField("visible_number")
-    private String visibleNumber;
-
-    /**
-     * 状态（1-已创建 ，2-已分配,3-已激活，4-未激活）
-     */
-    @TableField("status")
-    private Integer status;
-
-
-    /**
-     * email
-     */
-    @TableField("email")
     private String email;
-    /**
-     * 创建时间
-     */
-    @TableField("create_time")
+    private String uid;
+    private String visibleNumber;
+    private Integer status;
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
     private Date updateTime;
+
+    // 领域行为：创建卡片
+    public Card create(String uid, String visibleNumber) {
+        this.uid = uid;
+        this.visibleNumber = visibleNumber;
+        this.createTime = new Date();
+        this.status = CardStatusType.STATUS_CREATED.getCardStatus();
+        return this;
+    }
+
+    // 领域行为：更新卡片信息
+    public Card update(String uid, String visibleNumber) {
+        this.uid = uid;
+        this.visibleNumber = visibleNumber;
+        this.updateTime = new Date();
+        return this;
+    }
+
+    // 领域行为：变更卡片状态
+    public Card changeStatus(Integer status) {
+        this.status = status;
+        this.updateTime = new Date();
+        return this;
+    }
+
+    // 领域行为：分配卡片到账户
+    public Card assignToAccount(String email) {
+        this.email = email;
+        this.status = CardStatusType.STATUS_ASSIGNED.getCardStatus();
+        this.updateTime = new Date();
+        return this;
+    }
 }

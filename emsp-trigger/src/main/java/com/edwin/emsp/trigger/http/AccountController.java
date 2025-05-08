@@ -8,6 +8,7 @@ import com.edwin.emsp.domain.model.dto.validgroup.CreateGroup;
 import com.edwin.emsp.domain.model.dto.validgroup.UpdateGroup;
 import com.edwin.emsp.domain.model.message.Message;
 import com.edwin.emsp.service.AccountService;
+import com.edwin.emsp.trigger.http.assembler.AccountAssembler;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,14 +34,14 @@ public class AccountController {
     @Operation(summary = "api.account.create.summary", description = "api.account.create.description")
     @RequestMapping(value = "/accounts", method = RequestMethod.POST)
     public Message<?> create(@Validated(CreateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {
-        return Message.ok(accountService.createAccount(accountRequestDTO));
+        return Message.ok(accountService.createAccount(AccountAssembler.toDO(accountRequestDTO)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "api.status.account.update.summary", description = "api.status.account.update.description")
     @RequestMapping(value = "/account/status", method = RequestMethod.PATCH)
     public Message<?> update(@Validated(UpdateGroup.class) @RequestBody AccountRequestDTO accountRequestDTO) throws BizException {
-        return Message.ok(accountService.updateAccount(accountRequestDTO));
+        return Message.ok(accountService.updateAccount(AccountAssembler.toDO(accountRequestDTO)));
     }
 
     @Operation(summary = "api.list.account.summary", description = "api.list.account.description")
